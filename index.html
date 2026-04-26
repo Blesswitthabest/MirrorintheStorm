@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mirror in the Storm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="living-bg">
+    <span class="cloud cloud-1"></span>
+    <span class="cloud cloud-2"></span>
+    <span class="leaf leaf-1">🍃</span>
+    <span class="leaf leaf-2">🌿</span>
+    <span class="leaf leaf-3">🍂</span>
+    <span class="rain rain-1"></span>
+    <span class="rain rain-2"></span>
+    <span class="rain rain-3"></span>
+  </div>
+
+  <header class="topbar">
+    <button class="brand" onclick="goHome()">Mirror in the Storm</button>
+    <nav>
+      <button onclick="showProfile()">Profile</button>
+      <button onclick="showRewards()">Rewards</button>
+      <button onclick="restartGame()">Restart</button>
+    </nav>
+  </header>
+
+  <main id="app">
+
+    <section id="screen-login" class="screen active compact">
+      <div class="panel hero-panel">
+        <p class="kicker">Welcome</p>
+        <h1>Mirror in the Storm</h1>
+        <p class="subtitle">A reflective game where nature, mentor wisdom, and personal choices help youth move through challenge and growth.</p>
+
+        <div class="login-card">
+          <label for="playerName">Player Name</label>
+          <input id="playerName" type="text" placeholder="Enter your name" />
+
+          <label for="playerRole">Role / Identity</label>
+          <select id="playerRole">
+            <option>Student</option>
+            <option>Youth Leader</option>
+            <option>Mentor</option>
+            <option>Community Member</option>
+          </select>
+
+          <button class="primary" onclick="login()">Begin Your Journey</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-profile" class="screen">
+      <div class="panel">
+        <p class="kicker">Player Profile</p>
+
+        <div class="profile-top">
+          <div class="avatar" id="profileAvatar">🌱</div>
+          <div>
+            <h2 id="profileName">Player</h2>
+            <p id="profileRole" class="subtitle small">Student</p>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span id="statXP">0</span>
+            <small>Experience Points</small>
+          </div>
+
+          <div class="stat-card">
+            <span id="statStorms">0</span>
+            <small>Storms Completed</small>
+          </div>
+
+          <div class="stat-card">
+            <span id="statStickers">0 / 6</span>
+            <small>Stickers Earned</small>
+          </div>
+        </div>
+
+        <div class="progress-card">
+          <div class="row">
+            <strong>Journey Progress</strong>
+            <span id="journeyPercent">0%</span>
+          </div>
+          <div class="bar"><span id="journeyFill"></span></div>
+        </div>
+
+        <button class="primary" onclick="showCharacters()">Continue Journey</button>
+      </div>
+    </section>
+
+    <section id="screen-characters" class="screen">
+      <div class="panel">
+        <p class="kicker">Choose Your Character</p>
+        <h2>Who do you see yourself as on this journey?</h2>
+
+        <div class="character-list">
+          <button class="wide-card" onclick="selectCharacter('The Steadfast Protector','🛡️','Brave · Loyal · Strong')">
+            <span>🛡️</span>
+            <div>
+              <strong>The Steadfast Protector</strong>
+              <p>Guardian of boundaries, defender of values, resilient in the face of adversity.</p>
+              <small>Brave · Loyal · Strong</small>
+            </div>
+          </button>
+
+          <button class="wide-card" onclick="selectCharacter('The Kindred Spirit','💚','Compassionate · Open · Warm')">
+            <span>💚</span>
+            <div>
+              <strong>The Kindred Spirit</strong>
+              <p>Bridge-builder, connector of hearts, finding common ground in diversity.</p>
+              <small>Compassionate · Open · Warm</small>
+            </div>
+          </button>
+
+          <button class="wide-card" onclick="selectCharacter('The Weathered Sage','✨','Wise · Reflective · Patient')">
+            <span>✨</span>
+            <div>
+              <strong>The Weathered Sage</strong>
+              <p>Keeper of wisdom, patient observer, learning from every storm weathered.</p>
+              <small>Wise · Reflective · Patient</small>
+            </div>
+          </button>
+
+          <button class="wide-card" onclick="selectCharacter('The Empathic Healer','🤲','Gentle · Intuitive · Caring')">
+            <span>🤲</span>
+            <div>
+              <strong>The Empathic Healer</strong>
+              <p>Nurturer of souls, transforming pain into understanding.</p>
+              <small>Gentle · Intuitive · Caring</small>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-path" class="screen">
+      <div class="panel">
+        <p class="kicker">Choose Your Path</p>
+        <h2>Where does your journey begin?</h2>
+
+        <div class="path-list" id="pathList"></div>
+
+        <div class="button-row">
+          <button class="secondary" onclick="showCharacters()">Back</button>
+          <button class="primary" onclick="beginSelectedPath()">Begin</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-storm" class="screen game-screen">
+      <div class="hud">
+        <button class="pill" onclick="showProfile()">👤 <span id="hudName">Player</span></button>
+        <button class="pill" onclick="showRewards()">🏷️ Rewards <span id="hudRewardCount">0</span></button>
+      </div>
+
+      <p class="kicker" id="stormLabel">Storm 1</p>
+
+      <div class="mentor-mini">
+        <div id="mentorAvatar" class="avatar sm">🌱</div>
+        <strong id="mentorMiniName">Mentor</strong>
+        <small id="mentorMiniRole">Community Guide</small>
+      </div>
+
+      <div class="question-card">
+        <h2 id="stormTitle">The Challenge</h2>
+        <p id="stormText"></p>
+      </div>
+
+      <div class="answers" id="answers"></div>
+
+      <button id="continueDecision" class="primary disabled" onclick="showReflection()">Continue</button>
+
+      <div class="dots" id="dots"></div>
+    </section>
+
+    <section id="screen-reflection" class="screen game-screen">
+      <p class="kicker">Reflection</p>
+      <h2>Take a Moment</h2>
+      <p class="subtitle small">Growth happens when we reflect, not react.</p>
+
+      <div class="chosen-card">
+        <small>You chose:</small>
+        <p id="chosenAnswer"></p>
+      </div>
+
+      <p class="prompt">Why did you choose that response?</p>
+
+      <div class="answers">
+        <button onclick="selectReflection('What made me choose this response?')">What made me choose this response?</button>
+        <button onclick="selectReflection('How might this impact others?')">How might this impact others?</button>
+        <button onclick="selectReflection('What does this say about my values?')">What does this say about my values?</button>
+        <button onclick="selectReflection('Share my own thoughts...')">Share my own thoughts...</button>
+      </div>
+
+      <textarea id="ownThoughts" placeholder="Optional: write your reflection here..."></textarea>
+
+      <button id="continueReflection" class="primary disabled" onclick="showMentor()">Continue</button>
+
+      <div class="dots" id="dots2"></div>
+    </section>
+
+    <section id="screen-mentor" class="screen game-screen">
+      <p class="kicker">Community Voice</p>
+      <h2>A Mentor Shares</h2>
+
+      <div class="mentor-large">
+        <div class="avatar" id="mentorLargeAvatar">👨‍🏫</div>
+        <strong id="mentorName">Marcus Williams</strong>
+        <small id="mentorRole">Teacher</small>
+      </div>
+
+      <div class="quote-card">
+        <p id="mentorQuote"></p>
+      </div>
+
+      <div class="tags" id="mentorTags"></div>
+
+      <button class="primary" onclick="showGrowth()">Continue</button>
+
+      <div class="dots" id="dots3"></div>
+    </section>
+
+    <section id="screen-growth" class="screen game-screen">
+      <div class="growth-icon">🌱</div>
+      <h2>You’ve Grown Stronger</h2>
+
+      <div class="insight-card">
+        <small>Insight</small>
+        <p id="growthInsight"></p>
+      </div>
+
+      <div class="xp-card">
+        <p class="kicker">Growth Earned</p>
+        <strong id="xpEarned">+8</strong>
+        <span>Experience Points</span>
+
+        <div class="row">
+          <small>Level Progress</small>
+          <small id="xpTotal">0 / 60</small>
+        </div>
+
+        <div class="bar"><span id="xpFill"></span></div>
+      </div>
+
+      <button class="primary" onclick="earnReward()">Continue</button>
+
+      <div class="dots" id="dots4"></div>
+    </section>
+
+    <section id="screen-earned" class="screen compact">
+      <div class="panel">
+        <p class="kicker">Reward Earned</p>
+        <h2 id="earnedTitle">Awareness Sticker</h2>
+
+        <div class="big-sticker" id="earnedSticker">🌧️</div>
+
+        <p id="earnedText" class="subtitle"></p>
+
+        <div class="button-row">
+          <button class="secondary" onclick="showRewards()">View Rewards</button>
+          <button class="primary" onclick="nextStorm()">Next Storm</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-rewards" class="screen">
+      <div class="panel">
+        <p class="kicker">Reward Collection</p>
+        <h2>Your Earned Stickers</h2>
+
+        <p class="subtitle small">Each sticker marks a reflection milestone. Locked stickers reveal as you move through the storm.</p>
+
+        <div class="reward-grid" id="rewardGrid"></div>
+
+        <div class="progress-card">
+          <div class="row">
+            <strong>Collection Progress</strong>
+            <span id="collectionProgress">0 / 6</span>
+          </div>
+          <div class="bar"><span id="collectionFill"></span></div>
+        </div>
+
+        <button class="primary" onclick="showProfile()">Back to Profile</button>
+      </div>
+    </section>
+
+    <section id="screen-complete" class="screen compact">
+      <div class="panel">
+        <p class="kicker">Journey Complete</p>
+        <h2>Every Storm Reveals Who You Are Becoming.</h2>
+        <p class="subtitle">You moved through challenge, reflection, mentor insight, and growth.</p>
+        <button class="primary" onclick="showRewards()">View Final Rewards</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
